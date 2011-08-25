@@ -1,0 +1,113 @@
+\NeedsTeXFormat{LaTeX2e}[2009/09/24]
+\documentclass[12pt,oneside,a4paper]{article}
+%\usepackage[german]{babel}
+\usepackage{times}
+
+%Einundhalbfacher Zeilenabstand
+\renewcommand{\baselinestretch}{1.5}
+\setlength{\parindent}{0pt}
+\setlength{\oddsidemargin}{2mm}
+
+\usepackage[pdftex,xdvi]{graphicx}
+\usepackage[pdftex,colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue,]{hyperref}
+\usepackage{titleref}
+\usepackage[pdftex]{color}
+\pdfcompresslevel=9 \pdfoutput=1
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\DeclareGraphicsExtensions{.pdf,.jpg}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+
+\usepackage{ucs} 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{t1enc}
+\usepackage{fancyhdr}
+\usepackage{caption}
+%\usepackage{scrhack}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage[svgnames]{xcolor}
+\lstloadlanguages{bash}
+%\captionsetup{font=small, format=hang, justification=justified, labelsep=colon, labelformat=simple, singlelinecheck = true}
+%\captionsetup[lstlisting]{labelfont=bf,textfont=sc}
+\lstdefinestyle{bashstyle}{
+	language=bash,
+	basicstyle=\ttfamily\scriptsize,
+	columns=fixed,
+	basewidth=.5em,
+	numbers=left,
+	stepnumber=1,
+	numbersep=1em,
+	numberstyle=\tiny,
+	numberblanklines=false,
+	tabsize=2,
+	columns=fullflexible,
+	%framexrightmargin=-.05\textwidth,
+	framexrightmargin=-.5em,
+	breaklines=true,
+	prebreak=/,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	keepspaces=true,
+	xleftmargin=2em,
+	frame=tb,
+	frame=shadowbox,
+	rulesepcolor=\color{gray},
+	extendedchars=true,
+	belowcaptionskip=1em,
+	keywordstyle=\bfseries\color{DarkBlue},
+	stringstyle=\color{FireBrick},
+	commentstyle=\color{gray},
+}
+\lstnewenvironment{codelisting}[2]{ \vspace{1ex}\noindent
+	\lstset{ 
+		style=bashstyle,
+		label=#1,
+		caption=#2,
+	}
+}{}
+\usepackage{my}
+
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{\thesection.\ #1}{}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesubsection. #1}}
+\renewcommand{\subsectionmark}[1]%
+             {\markright{\thesubsection\ #1}}
+\lhead[\fancyplain{}{\thepage}]%
+             {\fancyplain{}{\rightmark}}
+\rhead[\fancyplain{}{\leftmark}]%
+             {\fancyplain{}{\thepage}}
+\cfoot{}
+
+\setcounter{secnumdepth}{2}% Tiefe der Gliederung
+\setcounter{tocdepth}{3}% Tiefe des Inhaltsverzeichnisses
+\clearpage
+\pagenumbering{roman}
+\setlength{\headheight}{15pt}
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    {\textsc{VSP AG\\
+        Borsigstraße 18\\
+        65 205 Wiesbaden\\}}
+    \vspace{25mm}
+    {\Huge\textbf{GIT}}\\
+    \vspace{1cm}
+    {\LARGE Richtlinien und Arbeitsprozess}\\[1.4ex]
+    \vspace{10cm}
+    \begin{tabular}{rl}
+      Datum:&\quad \today \\
+      Erstellt von:&\quad Patrick-Emil Zörner\\
+    \end{tabular}
+  \end{center}
+\end{titlepage}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\include{basics}
+\include{advanced}
+\end{document}

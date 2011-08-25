@@ -1,0 +1,90 @@
+%%%%%%%%%%%%%%%%%%%%
+% Basics
+%%%%%%%%%%%%%%%%%%%%
+\section{Basics}
+\subsection{Getting started}
+The programme git itself and all the commands have help pages e.g.: \texttt{git -{}-help} will show you the general and most commonly used commands. The first one listed is \texttt{git add}. This command like all other commands has its own help called by: \texttt{git add -{}-help}. Alternatively and maybe semantically more meaningful and faster \texttt{git help add}. Choose whatever suites you best.
+\subsubsection{Literature}
+A formatted and hyperlinked version of the latest git documentation can be viewed at \href{http://www.kernel.org/pub/software/scm/git/docs/}{kernel.org}. There is also a »gittutorial« at \href{http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html}{kernel.org} and for more in-depth introduction known as the »Git User’s Manual« also at \href{http://www.kernel.org/pub/software/scm/git/docs/user-manual.html}{kernel.org} there is a »Git User’s Manual«. For offline as well as online read there is a book called »Pro Git« at \href{http://progit.org/}{progit.org}. Another good online read is \href{http://gitready.com/}{gitready.com} with many examples for beginner, intermediate and advanced git users.
+\subsubsection{Most basic workflow before writing code}
+First of all ensure the only \textit{"dirty"} files in your typo3 instance whether local or remote are: \textit{.htaccess, db\_script, robots.txt} and \textit{typo3conf/localconf.php}. They are required to be in git because they also might be »point of failure« on the live platform. This is done as shown on line two in \ref{getting_started_00} (\titleref{sec:branching_and_comitting}). The output should look like \ref{console_output_00}. 
+\begin{codelisting}{getting_started_00}{Most basic example for getting started}
+#Show the branch (assume current branch is master)
+#If not see branching how to checkout a branch 
+> git branch
+#Show the status
+> git status
+#Hide dirty files
+> git stash
+#Get the current master from upstream repository origin
+> git pull --rebase origin master 
+#Restore the locale configuration
+> git stash pop 
+\end{codelisting}
+Now in order to be able to \texttt{pull} you need a \textit{"clean"} working directory. A pretty neat feature in git is the \texttt{stash} (see \texttt{git stash -{}-help}) which stashes the changes in a \textit{"dirty"} working directory away. See the command on line four of \ref{getting_started_00}.
+
+In this example the assumption is made that the current local branch is the master branch and it should be updated from a remote repository (e.g.: \href{https://github.com/}{github.com}).
+\begin{codelisting}{console_output_00}{Output for git status}
+# On branch master
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   .htaccess
+#       modified:   db_script
+#       modified:   robots.txt
+#       modified:   typo3conf/localconf.php
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+\end{codelisting}
+\paragraph{Understanding pull}
+A simple \texttt{pull} is a \texttt{fetch} followed by a \texttt{merge}. In most cases that is not wanted and the \texttt{rebase} is the preferred method that is why that option is used on line eight of \ref{getting_started_00}. It takes the other branch and attempts to put the current branch on top of it (see \texttt{git rebase -{}-help} for a more detailed explanation). On a conflict during \texttt{pull --rebase} it can happen that the rebase fails. In that case you „fall out“ of the current branch and find yourself in \texttt{no branch}. This means you have a \href{http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html#_detached_head}{detached} \href{http://sitaramc.github.com/concepts/detached-head.html}{head}. The \texttt{origin master} tells git to pull from master in the remote repository. Specifying so ensures that git does not attempt to \texttt{pull} from a local branch.
+
+On line ten of \ref{getting_started_00} the local configuration of the server is played back using \texttt{pop}. The command removes the last stashed state from the stash applying it to the current working directory. Basically it is an undo of line four. This can fail with conflicts.
+\subsection{Adding, moving (renaming) and removing}
+To add a file to the git use \texttt{git add FILENAME}. The Syntax to recursively add a directory is \texttt{git add PATH/DIRNAME}. When files are in the git repository it is more efficient to also tell git that these files moved (have been renamed) or removed.
+\begin{codelisting}{rm_00}{Removing}
+> git mv SOURCE DESTINATION
+> git rm
+> git rm --cached
+\end{codelisting}
+\subsection{Branching and committing}\label{sec:branching_and_comitting}
+It is useful to create a new branch if you work on a new project e.g.: a bugtracker ticket number and/or note identifier within this ticket and you are encouraged to do so. The concept and principle is to »divide and conquer«. It must always be possible to quickly find out which purpose a branch serves and who the owner is. Therefore the branch name should look like this:\\ \texttt{nickname\_000\_{[\_bugtrackerTicketNumber]}{[\_noteNumber]}{[\_description]}}.
+\begin{codelisting}{branching_00}{Branching}
+#Lists all local branches; marks the current working branch with a star
+> git branch
+#Create a new branch called NEWBRANCH
+> git branch NEWBRANCH
+#Make NEWBRANCH the current working branch
+> git checkout NEWBRANCH
+#Switch back to master branch
+> git checkout master
+#Create a new branch called NEWBRANCH and make it the current working branch
+> git checkout -b NEWBRANCH
+#Practical examples
+> git branch werksfarbe_6790_htmlAndStylesheetClosedFunds
+> git checkout werksfarbe_6790_htmlAndStylesheetClosedFunds
+> git co -b paddy_6789_123456_extension_vsp_ophirum
+\end{codelisting}
+\subsubsection{Branch ex post}
+Work on a different branch than the current but move the commits to the new working branch. For example: Move entire master branch to \texttt{NEWBRANCH} and rebuild the master from origin/master afterwards. 
+\begin{codelisting}{branching_01}{Branch ex post}
+#The flag -m means move branch master to NEWBRANCH
+#and do the corresponding reflog (git reflog --help)
+> git branch -m master NEWBRANCH
+#Get master from remote repository reset the commits
+> git checkout -b master origin/master
+\end{codelisting}
+A branch should consist of at least a single commit. The rule is: \textbf{commit as often as possible!} Each commit must have a specific description of what the changes are which you can not leave empty. Specific means: „Do not point out the obvious!“ e.g: »made changes«, »this and that« or »...« are counterproductive because you could write that in all you commit messages regardless of what the commit was. Mentioning that a commit has modifications is pointless. That is what a commit is about namely „Making changes in files“. Therefore specify what the changes were about and/or why they were necessary.  The more information a commit message has the better.
+\begin{codelisting}{committing_00}{Commit}
+#Commit a single file called FILE
+> git commit -m'A really good summary of what the commit is about. Feel free to explain what changes are involved and why they where necessary. Name people that suggested the changes.' FILE
+#Commit all files. Use with caution!
+#(NB.: omitting the commit message leads git to open an editor)
+> git commit -a
+\end{codelisting}
+To make the review acceptable commit after each step of your work. Having worked on subject A commit before you move on to subject B. Commits must be made at latest after one hour of work on source files. There should not be more than ten modified files in a commit. An unlimited number of new files may be committed though. Avoid forcing the reviewer to scroll unnecessarily when inspecting a commit. Do not mix new files and modified files in one commit if it can be avoided. It is better to make a commit for all new files and explicitly mention the fact that you added files or an extension in the commit message.
+\paragraph{Correct a commit message}
+\begin{codelisting}{committing_01}{Correct a commit message}
+> git commit --amend -m'your new message'
+\end{codelisting}

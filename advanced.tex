@@ -1,0 +1,119 @@
+%%%%%%%%%%%%%%%%%%%%
+% Advanced
+%%%%%%%%%%%%%%%%%%%%
+\section{Advanced}
+\begin{codelisting}{advanced_00}{Get an overview of remote branches}
+#Get the remote changes
+> git fetch
+#Show all branches
+> git remote show origin
+#Show all known branches
+> git branch -a
+\end{codelisting}
+\subsection{Merge conflicts}
+On merge conflicts \ref{advanced_01} there are mostly three stages of the files involved: "base" 1, "ours" 2 and "theirs" 3 see \ref{advanced_02}. Files without merge conflict have only one stage stage namely 0. Sometimes there is no "ours" or no "theirs". That happens when the file is not existent in one repository. Base is the common source of ours and theirs. Ours is the version in the remote repository (github). Theirs is the local version we are working on (the developing server).
+\begin{codelisting}{advanced_01}{Merge conflict after pull rebase}
+# Not currently on any branch.
+# Unmerged paths:
+#   (use "git reset HEAD <file>..." to unstage)
+#   (use "git add/rm <file>..." as appropriate to mark resolution)
+#
+#       both modified:    FILE
+
+#NB: during rebase the HEAD got "detached" (see above output)
+> git branch
+* (no branch)
+  master
+...
+\end{codelisting}
+The stages of a file and their content may be displayed as shown in \ref{advanced_02} from left to right there are: file permissions, the SHA1, the stage and the filename of the file.
+\begin{codelisting}{advanced_02}{List file status}
+> git ls-files -s FILE
+100755 b42be60e564a0f9a948d08b37fec6ec603793d7e 1       FILE
+100755 2c3b3cac7dc0275c073edaae7cee5dd90c90f210 2       FILE
+100755 8bf1e221687ce7ec48b180a2f0880239ce34455b 3       FILE
+#View the FILE in the different versions
+> git show 2c3b3cac7dc0275c073edaae7cee5dd90c90f210 #"ours"
+> git show 8bf1e221687ce7ec48b180a2f0880239ce34455b #"theirs"
+\end{codelisting}
+In \ref{advanced_03}/\ref{advanced_04} we see an example how you can hand merge a file that is stale locally (Home is still present in "their" file) but already has changed in the remote origin (Home has been removed in "our" file).
+\begin{codelisting}{advanced_03}{Example of merge conflict}
+...
++<<<<<<< Updated upstream                                                                                                                                                                                                                    
+    <li class="first-item"><a href=""></a></li>
++=======                                                                                                                                                                                                                                     
++   <li class="first-item"><a href="">Home</a></li>                                                                                                                                                              
++>>>>>>> Stashed changes
+...
+\end{codelisting}
+By editing the file by hand as shown in \ref{advanced_04} the preferred version is restored.
+\begin{codelisting}{advanced_04}{Example of merge conflict resolved}
+...
+    <li class="first-item"><a href=""></a></li>
+...
+\end{codelisting}
+Alternatively, because obviously "our" file is needed, that version may be fetched as shown in \ref{advanced_05}.
+\begin{codelisting}{advanced_05}{Example of merge conflict resolved alternative}
+> git checkout --ours FILE
+\end{codelisting}
+In another example a merge conflict has happened in on of the following files: .htaccess, db\_script, robots.txt or typo3conf/localconf.php \ref{console_output_00}. In order to keep the version that is running on the developing server and discard remote changes \texttt{git checkout --theirs FILE} is used.
+\subsubsection{Mergetool}
+After solving the conflicts or as a conflict resolution mergetool is run. Basically it starts
+\subsection{Finding branches knowing the commit SHA1}
+\begin{codelisting}{advanced_05}{Finding branches knowing the commit SHA1}
+> git branch --contains 864afa58a82c58e4367ac4e2b70b57d667494a8c
+* master
+> git branch -r --contains 0fc352ba9abea4d9ec8e
+  origin/werksfarbe_0008632_umbau_der_tabs_auf_first_child
+\end{codelisting}
+\subsection{Config file}
+Use the \texttt{help config} command to find out about all the settings.
+\begin{codelisting}{advanced_06}{Configuring git}
+> git config --global user.name 'Patrick-Emil Zoerner'
+> git config --global user.email 'zoerner@vsp.ag'
+> git config --global github.user paddyez
+> git config --global github.token 0123456789yourf0123456789token
+#Colors for black background and green as font color
+> git config --global color.branch.current 'yellow bold'
+> git config --global color.branch.remote 'cyan bold'
+> git config --global color.diff.new 'yellow bold'
+> git config --global color.diff.old 'red bold'
+> git config --global color.diff.meta 'cyan bold'
+> git config --global color.diff.frag 'white bold'
+> git config --global color.diff.commit 'white bold'
+> git config --global color.status.added 'yellow bold'
+> git config --global color.status.changed 'cyan bold'
+> git config --global color.status.untracked 'red bold'
+\end{codelisting}
+Alternatively and if you know what you are doing you can edit the file .gitconfig.
+\begin{codelisting}{advanced_07}{.gitconfig}
+[user]
+        name = Patrick-Emil Zoerner
+        email = zoerner@vsp.ag
+[github]
+        user = paddyez
+        token = 0123456789yourf0123456789token
+[merge]
+        tool = vimdiff
+[diff]
+        color = auto
+[alias]
+        st = status
+        ci = commit
+        co = checkout
+        br = branch
+        di = diff --ignore-all-space
+[color "branch"]
+        current = yellow bold
+        remote = cyan bold
+[color "diff"]
+        new = yellow bold
+        old = red bold
+        meta = cyan bold
+        frag = white bold
+        commit = white bold
+[color "status"]
+        added = yellow bold
+        changed = cyan bold
+        untracked = red bold
+\end{codelisting}

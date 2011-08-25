@@ -1,0 +1,6 @@
+#!/bin/bash
+pdflatex main.tex
+pdflatex main.tex
+#gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=git-cheat-sheet_90.pdf -sPAPERSIZE=a4 -dAutoRotatePages=/None  -c "<</Orientation 0>> setpagedevice" -f git-cheat-sheet.pdf
+#gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=git.pdf -sPAPERSIZE=a4 -dAutoRotatePages=/None  -c "<</Orientation 0>> setpagedevice" -f main.pdf git-cheat-sheet.pdf 
+rm -f *.aux *.ind *.lof *.log *.nlo *.nls *.out *.toc *~

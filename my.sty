@@ -1,0 +1,28 @@
+% --- Verweis auf Abbildungen ---
+% z.B.: Wie sie in \abb{labelname} sehen können....
+\newcommand{\abb}[1]{\iflanguage{german}{Abb.~\ref{#1}}{fig.~\ref{#1}}}
+
+% *** Definition von nach außen nicht sichtbaren Makros ***
+
+% --- DBL-Arg ---
+% Zweck: Wird benoetigt, um optionale Argumente zu verwenden
+% ist aus Kopka(Erweiterungs..) Seite 273 entnommen
+% Erklärung siehe dort.
+% Beispiel:
+% Die Funktion \xxx soll ein optionales Argument haben,
+% d.h. folgende Aufrufe sollen möglich sein:
+% \xxx[opt]{arg}
+%   und
+% \xxx{arg}
+% Wenn [opt] weggelassen wird, dann wird opt=arg gesetzt (Das 
+% soll DblArg nun machen)
+% Dazu erfolg die Makrodefinition in der folgenden Form:
+% \def\xxx{\DblArg{\xx}}
+% Die Funktion die die eigentliche Arbeit übernehmen soll ist
+% damit \xx, welche immer zwei Argumente übergeben bekommt!
+% Die Definition von \xx wäre z.B.:
+% \def\xx[#1]#2
+\def\DblArg #1{\def\DAtemp{#1}\futurelet\DAlook\Decide }
+\def\Darg{\ifx \DAlook [ \let\DAdo=\DAtemp
+          \else          \let\DAdo=DBarg   \fi \DAdo }
+\def\DBarg #1{\DAtemp[#1]{#1}}
