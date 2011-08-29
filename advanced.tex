@@ -179,10 +179,10 @@ $favicon = "git-favicon.png";
 > cd /var/cache/git/
 > mkdir vsp.ag
 > cd vsp.ag
-> git init
+> git --bare init --shared
 > echo "VSP AG & Fondsvermittlung24.de" > .git/description
 > git commit -a
 > touch .git/git-daemon-export-ok
-> git daemon --base-path=/var/cache/git --detach --syslog --export-all
+> git daemon --base-path=/var/cache/git --detach --syslog --export-all --enable=receive-pack
 > git clone git://git/vsp.ag vsp.ag 
 \end{codelisting}
