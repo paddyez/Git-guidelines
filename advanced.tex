@@ -117,3 +117,72 @@ Alternatively and if you know what you are doing you can edit the file .gitconfi
         changed = cyan bold
         untracked = red bold
 \end{codelisting}
+\subsection{Make non git repository a git repository}
+\begin{codelisting}{advanced_08}{}
+git init
+git remote add origin git://git/vsp.ag
+git pull --rebase origin master
+\end{codelisting}
+\subsection{Install a git public repository on debian}
+\begin{codelisting}{advanced_09}{}
+> sudo apt-get install git-core gitweb
+> sudo mkdir /var/www/git 
+> [ -d "/var/cache/git" ] || sudo mkdir /var/cache/git
+> sudo vim /etc/apache2/sites-available/git
+--8<--
+<VirtualHost *:80>
+        ServerName      git
+        DocumentRoot    /var/www/git/
+        <Directory /var/www/git>
+                Allow from all
+                AllowOverride all
+                Order allow,deny
+                Options ExecCGI
+                <Files gitweb.cgi>
+                        SetHandler cgi-script
+                </Files>
+        </Directory>
+        DirectoryIndex gitweb.cgi
+        SetEnv  GITWEB_CONFIG  /etc/gitweb.conf
+
+        CustomLog       /var/log/apache2/git_access.log combined
+        ErrorLog        /var/log/apache2/git_error.log
+        RewriteLog      /var/log/apache2/git_rewrite.log
+        RewriteLogLevel 3
+</VirtualHost>
+-->8--
+> sudo a2ensite git
+> sudo cp /usr/share/gitweb/* /var/www/git
+> sudo cp /usr/lib/cgi-bin/gitweb.cgi /var/www/git
+> cd /var/www/git
+> ln -s /usr/lib/cgi-bin/gitweb.cgi index.cgi
+> sudo vim /etc/gitweb.conf
+--8<--
+# path to git projects (<project>.git)
+$projectroot = "/var/cache/git";
+# directory to use for temp files
+$git_temp = "/tmp";
+# target of the home link on top of all pages
+#$home_link = $my_uri || "/";
+# html text to include at home page
+$home_text = "indextext.html";
+# file with project list; by default, simply scan the projectroot dir.
+$projects_list = $projectroot;
+# stylesheet to use
+$stylesheet = "gitweb.css";
+# logo to use
+$logo = "git-logo.png";
+# the 'favicon'
+$favicon = "git-favicon.png";
+-->8--
+> sudo etc/init.d/apache2 reload
+> cd /var/cache/git/
+> mkdir vsp.ag
+> cd vsp.ag
+> git init
+> echo "VSP AG & Fondsvermittlung24.de" > .git/description
+> git commit -a
+> touch .git/git-daemon-export-ok
+> git daemon --base-path=/var/cache/git --detach --syslog --export-all
+> git clone git://git/vsp.ag vsp.ag 
+\end{codelisting}
