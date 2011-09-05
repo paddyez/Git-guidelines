@@ -15,12 +15,13 @@
 \pdfcompresslevel=9 \pdfoutput=1
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{newclude}
 
 \DeclareGraphicsExtensions{.pdf,.jpg}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
 
 \usepackage{ucs} 
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
 \usepackage{t1enc}
@@ -88,6 +89,7 @@
 \clearpage
 \pagenumbering{roman}
 \setlength{\headheight}{15pt}
+\includeonly{basics,advanced}
 \begin{document}
 \begin{titlepage}
   \begin{center}
@@ -112,5 +114,5 @@
 \newpage
 \pagenumbering{arabic}
 \include{basics}
-\include{advanced}
+\input{advanced}
 \end{document}

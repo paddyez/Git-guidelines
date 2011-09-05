@@ -7,7 +7,7 @@ The programme git itself and all the commands have help pages e.g.: \texttt{git 
 \subsubsection{Literature}
 A formatted and hyperlinked version of the latest git documentation can be viewed at \href{http://www.kernel.org/pub/software/scm/git/docs/}{kernel.org}. There is also a »gittutorial« at \href{http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html}{kernel.org} and for more in-depth introduction known as the »Git User’s Manual« also at \href{http://www.kernel.org/pub/software/scm/git/docs/user-manual.html}{kernel.org}. For offline as well as online read there is a book called »Pro Git« at \href{http://progit.org/}{progit.org}. Another good online read is \href{http://gitready.com/}{gitready.com} with many examples for beginner, intermediate and advanced git users.
 \subsubsection{Most basic workflow before writing code}
-First of all ensure the only \textit{"dirty"} files in your typo3 instance whether local or remote are: \textit{.htaccess, db\_script, robots.txt} and \textit{typo3conf/localconf.php}. They are required to be in git because they also might be »point of failure« on the live platform. This is done as shown on line two in~\mycodelisting{getting_started_00} (\titleref{sec:branching_and_comitting}). The output should look like~\mycodelisting{console_output_00}. 
+First of all ensure the only \textit{"dirty"} files in your typo3 instance whether local or remote are: \textit{.htaccess, db\_script, robots.txt} and \textit{typo3conf/localconf.php}. They are required to be in git because they also might be »point of failure« on the live platform. This is done as shown on line two in~\mycodelisting{getting_started_00} (section \titleref{sec:branching_and_comitting}). The output should look like~\mycodelisting{console_output_00}. 
 \begin{codelisting}{getting_started_00}{Most basic example for getting started}
 # Show the branch (assume current branch is master)
 # If not see branching how to checkout a branch 
@@ -50,6 +50,8 @@ To add a file to the git use \texttt{git add FILENAME}. The Syntax to recursivel
 \end{codelisting}
 \subsection{Branching and committing}\label{sec:branching_and_comitting}
 It is useful to create a new branch if you work on a new project e.g.: a bugtracker ticket number and/or note identifier within this ticket and you are encouraged to do so. The concept and principle is to »divide and conquer«. It must always be possible to quickly find out which purpose a branch serves and who the owner is. Therefore the branch name should look like this:\\ \texttt{nickname\_000\_{[\_bugtrackerTicketNumber]}{[\_noteNumber]}{[\_description]}}.
+
+Creating a branch without a second argument will lead to HEAD being the base of the new branch, that is the currently checked out branch.
 \begin{codelisting}{branching_00}{Branching}
 # Lists all local branches; marks the current working branch with a star
 > git branch
@@ -85,6 +87,8 @@ A branch should consist of at least a single commit. The rule is: \textbf{commit
 \end{codelisting}
 To make the review acceptable commit after each step of your work. Having worked on subject A commit before you move on to subject B. Commits must be made at latest after one hour of work on source files. There should not be more than ten modified files in a commit. An unlimited number of new files may be committed though. Avoid forcing the reviewer to scroll unnecessarily when inspecting a commit. Do not mix new files and modified files in one commit if it can be avoided. It is better to make a commit for all new files and explicitly mention the fact that you added files or an extension in the commit message.
 \paragraph{Correct a commit message}
+\textbf{NB.:} Do not use the amend option after a push. The option is like doing a \texttt{reset HEAD~1} and git commit. The commit will not be edited but made new. But after a push there is still the old edit. Without the force option there will be no chance of continuing. This especially bad if somebody pulled in the meantime.
 \begin{codelisting}{committing_01}{Correct a commit message}
 > git commit --amend -m'your new message'
 \end{codelisting}
+\nopagebreak[4]
