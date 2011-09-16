@@ -208,8 +208,12 @@ $favicon = "git-favicon.png";
 > cd /var/cache/git/
 > mkdir vsp.ag
 > cd vsp.ag
+
 > git init
 > git config --bool core.bare true
+# Or (maybe better?! Do not know jet)
+> git --bare init --shared
+
 > echo "VSP AG & Fondsvermittlung24.de" > .git/description
 > git commit -a
 > touch .git/git-daemon-export-ok

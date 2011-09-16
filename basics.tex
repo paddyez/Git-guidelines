@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%
 \section{Basics}
 \subsection{Getting started}
-The programme git itself and all the commands have help pages e.g.: \texttt{git -{}-help} will show you the general and most commonly used commands. The first one listed is \texttt{git add}. This command like all other commands has its own help called by: \texttt{git add -{}-help}. Alternatively and maybe semantically more meaningful and faster \texttt{git help add}. Choose whatever suites you best.
+The programme git itself and all the commands have help pages e.g.: \texttt{git help} will show you the general and most commonly used commands. The first one listed is \texttt{git add}. This command like all other commands has its own help called by: \texttt{git add -{}-help}. Alternatively and maybe semantically more meaningful and faster \texttt{git help add}. Choose whatever suites you best.
 \subsubsection{Literature}
 A formatted and hyperlinked version of the latest git documentation can be viewed at \href{http://www.kernel.org/pub/software/scm/git/docs/}{kernel.org}. There is also a »gittutorial« at \href{http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html}{kernel.org} and for more in-depth introduction known as the »Git User’s Manual« also at \href{http://www.kernel.org/pub/software/scm/git/docs/user-manual.html}{kernel.org}. For offline as well as online read there is a book called »Pro Git« at \href{http://progit.org/}{progit.org}. Another good online read is \href{http://gitready.com/}{gitready.com} with many examples for beginner, intermediate and advanced git users.
 \subsubsection{Most basic workflow before writing code}
@@ -21,7 +21,7 @@ First of all ensure the only \textit{"dirty"} files in your typo3 instance wheth
 # Restore the locale configuration
 > git stash pop 
 \end{codelisting}
-Now in order to be able to \texttt{pull} you need a \textit{"clean"} working directory. A pretty neat feature in git is the \texttt{stash} (see \texttt{git stash -{}-help}) which stashes the changes in a \textit{"dirty"} working directory away. See the command on line four of~\mycodelisting{getting_started_00}.
+Now in order to be able to \texttt{pull} you need a \textit{"clean"} working directory. A pretty neat feature in git is the \texttt{stash} (see \texttt{git help stash}) which stashes the changes in a \textit{"dirty"} working directory away. See the command on line four of~\mycodelisting{getting_started_00}.
 
 In this example the assumption is made that the current local branch is the master branch and it should be updated from a remote repository (e.g.: \href{https://github.com/}{github.com}).
 \begin{codelisting}{console_output_00}{Output for git status}
@@ -38,7 +38,7 @@ In this example the assumption is made that the current local branch is the mast
 no changes added to commit (use "git add" and/or "git commit -a")
 \end{codelisting}
 \paragraph{Understanding pull}
-A simple \texttt{pull} is a \texttt{fetch} followed by a \texttt{merge}. In most cases that is not wanted and the \texttt{rebase} is the preferred method that is why that option is used on line eight of~\mycodelisting{getting_started_00}. It takes the other branch and attempts to put the current branch on top of it (see \texttt{git rebase -{}-help} for a more detailed explanation). On a conflict during \texttt{pull --rebase} it can happen that the rebase fails. In that case you „fall out“ of the current branch and find yourself in \texttt{no branch}. This means you have a \href{http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html#_detached_head}{detached} \href{http://sitaramc.github.com/concepts/detached-head.html}{head}. The \texttt{origin master} tells git to pull from master in the remote repository. Specifying so ensures that git does not attempt to \texttt{pull} from a local branch.
+A simple \texttt{pull} is a \texttt{fetch} followed by a \texttt{merge}. In most cases that is not wanted and the \texttt{rebase} is the preferred method that is why that option is used on line eight of~\mycodelisting{getting_started_00}. It takes the other branch and attempts to put the current branch on top of it (see \texttt{git help rebase} for a more detailed explanation). On a conflict during \texttt{pull --rebase} it can happen that the rebase fails. In that case you „fall out“ of the current branch and find yourself in \texttt{no branch}. This means you have a \href{http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html#_detached_head}{detached} \href{http://sitaramc.github.com/concepts/detached-head.html}{head}. The \texttt{origin master} tells git to pull from master in the remote repository. Specifying so ensures that git does not attempt to \texttt{pull} from a local branch.
 
 On line ten of~\mycodelisting{getting_started_00} the local configuration of the server is played back using \texttt{pop}. The command removes the last stashed state from the stash applying it to the current working directory. Basically it is an undo of line four. This can fail with conflicts.
 \subsection{Adding, moving (renaming) and removing}
@@ -72,7 +72,7 @@ Creating a branch without a second argument will lead to HEAD being the base of 
 Work on a different branch than the current but move the commits to the new working branch. For example: Move entire master branch to \texttt{NEWBRANCH} and rebuild the master from origin/master afterwards. 
 \begin{codelisting}{branching_01}{Branch ex post}
 # The flag -m means move branch master to NEWBRANCH
-# and do the corresponding reflog (git reflog --help)
+# and do the corresponding reflog (git help reflog)
 > git branch -m master NEWBRANCH
 # Get master from remote repository reset the commits
 > git checkout -b master origin/master
