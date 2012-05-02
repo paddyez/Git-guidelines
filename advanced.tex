@@ -10,6 +10,10 @@
 # Show all known branches
 > git branch -a
 \end{codelisting}
+\subsection{Restoring a branch from remote}
+\begin{codelisting}{advanced_001}{Restoring a branch from remote}
+> git co origin/master -b master
+\end{codelisting}
 \subsection{Merge conflicts}
 On merge conflicts~\mycodelisting{advanced_01} there are mostly three stages of the files involved: "base" 1, "ours" 2 and "theirs" 3 see~\mycodelisting{advanced_02}. Files without merge conflict have only one stage stage namely 0. Sometimes there is no "ours" or no "theirs". That happens when the file is not existent in one repository. Base is the common source of ours and theirs. Ours is the version in the remote repository (github). Theirs is the local version we are working on (the developing server).
 \begin{codelisting}{advanced_01}{Merge conflict after pull rebase}
@@ -220,3 +224,9 @@ $favicon = "git-favicon.png";
 > git daemon --base-path=/var/cache/git --detach --syslog --export-all --enable=receive-pack
 > git clone git://git/vsp.ag vsp.ag 
 \end{codelisting}
+\subsection{Garbage collection}
+\begin{codelisting}{advanced_12}{Garbage collection}
+git gc --aggressive
+git gc --prune=now
+\end{codelisting}
+\subsection{Prune}
