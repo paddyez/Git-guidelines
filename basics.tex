@@ -42,6 +42,29 @@ no changes added to commit (use "git add" and/or "git commit -a")
 A simple \texttt{pull} is a \texttt{fetch} followed by a \texttt{merge}. In most cases that is not wanted and the \texttt{rebase} is the preferred method that is why that option is used on line eight of~\mycodelisting{getting_started_00}. It takes the other branch and attempts to put the current branch on top of it (see \texttt{git help rebase} for a more detailed explanation). On a conflict during \texttt{pull --rebase} it can happen that the rebase fails. In that case you „fall out“ of the current branch and find yourself in \texttt{no branch}. This means you have a \href{http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html#_detached_head}{detached} \href{http://sitaramc.github.com/concepts/detached-head.html}{head}. The \texttt{origin master} tells git to pull from master in the remote repository. Specifying so ensures that git does not attempt to \texttt{pull} from a local branch.
 
 On line ten of~\mycodelisting{getting_started_00} the local configuration of the server is played back using \texttt{pop}. The command removes the last stashed state from the stash applying it to the current working directory. Basically it is an undo of line four. This can fail with conflicts.
+\begin{codelisting}{pull_00}{Pulling}
+> git pull --rebase origin master
+> git pull upstream aoe_modifications
+\end{codelisting}
+\paragraph{Understanding push}
+The push command needs to know to which remote repository and to which branch it should put the new commits. The remote usually is origin but the branch is mostly the current branch you work on.
+\begin{codelisting}{push_00}{Pushing}
+> git push origin master
+> git push upsteam aoe_modifications
+\end{codelisting}
+When nothing else is specified simple ist the new default.
+\begin{itemize}
+\item\textbf{simple} – A new mode for push, "simple", which is a cross between "current" and "upstream", has been introduced. \texttt{git push} without any refspec will push the current branch out to the same name at the remote repository only when it is set to track the branch with the same name over there. The plan is to make this mode the new default value when push.default is not configured.
+\item\textbf{nothing} – do not push anything.
+\item\textbf{matching} – push all matching branches. All branches having the same name in both ends are considered to be matching. This is the default.
+\item\textbf{upstream} – push the current branch to its upstream branch.
+\item\textbf{tracking} – deprecated synonym for upstream.
+\item\textbf{current} – push the current branch to a branch of the same name.
+\end{itemize}
+To set the default push mode simply use git config:
+\begin{codelisting}{push_01}{Set push.default}
+> git config --global push.default simple
+\end{codelisting}
 \subsection{Adding, moving (renaming) and removing}
 To add a file to the git use \texttt{git add FILENAME}. The Syntax to recursively add a directory is \texttt{git add PATH/DIRNAME}. When files are in the git repository it is more efficient to also tell git that these files moved (have been renamed) or removed. Use the cached option to remove files from repository but not locally.
 \begin{codelisting}{rm_00}{Removing}
