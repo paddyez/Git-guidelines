@@ -157,7 +157,7 @@ git remote add origin git://git/vsp.ag
 git pull --rebase origin master
 \end{codelisting}
 \subsection{Install a git public repository on debian}
-\begin{codelisting}{advanced_11}{Installing }
+\begin{codelisting}{advanced_11}{Installing}
 > sudo apt-get install git-core gitweb
 > sudo mkdir /var/www/git 
 > [ -d "/var/cache/git" ] || sudo mkdir /var/cache/git
@@ -208,21 +208,26 @@ $logo = "git-logo.png";
 # the 'favicon'
 $favicon = "git-favicon.png";
 -->8--
-> sudo etc/init.d/apache2 reload
+> sudo /etc/init.d/apache2 reload
 > cd /var/cache/git/
 > mkdir vsp.ag
 > cd vsp.ag
 
+> git --bare init --shared
+
+Alternativly
+
 > git init
 > git config --bool core.bare true
-# Or (maybe better?! Do not know jet)
-> git --bare init --shared
 
 > echo "VSP AG & Fondsvermittlung24.de" > .git/description
 > git commit -a
 > touch .git/git-daemon-export-ok
-> git daemon --base-path=/var/cache/git --detach --syslog --export-all --enable=receive-pack
-> git clone git://git/vsp.ag vsp.ag 
+> git daemon --base-path=/var/cache/git/ --detach --syslog --export-all --enable=receive-pack
+> sv stop git-daemon # To stop the deaemon
+> sv force-shutdown git-daemon
+> git clone git://git/vsp.ag vsp.ag
+> git clone ssh://intern.vsp-services.com/var/cache/git/vsp.ag vsp.ag
 \end{codelisting}
 \subsection{Garbage collection}
 \begin{codelisting}{advanced_12}{Garbage collection}
