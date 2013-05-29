@@ -54,17 +54,20 @@ The push command needs to know to which remote repository and to which branch it
 \end{codelisting}
 When nothing else is specified simple ist the new default.
 \begin{itemize}
-\item\textbf{simple} – A new mode for push, "simple", which is a cross between "current" and "upstream", has been introduced. \texttt{git push} without any refspec will push the current branch out to the same name at the remote repository only when it is set to track the branch with the same name over there. The plan is to make this mode the new default value when push.default is not configured.
+\item\textbf{simple} – like upstream, but refuses to push if the upstream branch’s name is different from the local one. This is the safest option and is well-suited for beginners. It will become the default in Git 2.0.
 \item\textbf{nothing} – do not push anything.
-\item\textbf{matching} – push all matching branches. All branches having the same name in both ends are considered to be matching. This is the default.
-\item\textbf{upstream} – push the current branch to its upstream branch.
+\item\textbf{matching} – push all branches having the same name in both ends. This is for those who prepare all the branches into a publishable shape and then push them out with a single command. It is not appropriate for pushing into a repository shared by multiple users, since locally stalled branches will attempt a non-fast forward push if other users updated the branch.\\
+This is currently the default, but Git 2.0 will change the default to simple.
+\item\textbf{upstream} – push the current branch to its upstream branch. With this, git push will update the same remote ref as the one which is merged by git pull, making push and pull symmetrical. See "branch.<name>.merge" for how to configure the upstream branch.
 \item\textbf{tracking} – deprecated synonym for upstream.
 \item\textbf{current} – push the current branch to a branch of the same name.
 \end{itemize}
+The simple, current and upstream modes are for those who want to push out a single branch after finishing work, even when the other branches are not yet ready to be pushed out. If you are working with other people to push into the same shared repository, you would want to use one of these.
 To set the default push mode simply use git config:
 \begin{codelisting}{push_01}{Set push.default}
 > git config --global push.default simple
 \end{codelisting}
+It defines the action git push should take if no refspec is given on the command line, no refspec is configured in the remote, and no refspec is implied by any of the options given on the command line.
 \subsection{Adding, moving (renaming) and removing}
 To add a file to the git use \texttt{git add FILENAME}. The Syntax to recursively add a directory is \texttt{git add PATH/DIRNAME}. When files are in the git repository it is more efficient to also tell git that these files moved (have been renamed) or removed. Use the cached option to remove files from repository but not locally.
 \begin{codelisting}{rm_00}{Removing}
